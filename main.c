@@ -17,7 +17,7 @@ int main() {
 
   while (!window_should_close(window)) {
     render_clear(0.0, 0.0, 0.0, 0.0);
-    render_draw();
+    render_draw(0, 0, 15, 15, 255, 0, 0, 255);
     window_update(window);
   }
 
