@@ -15,9 +15,16 @@ int main() {
 
   printf("render initialized\n");
 
+  Object obj = {
+    bounds: { 0.0f, 0.0f, 0.2f, 0.25f },
+    color: {1.0f, 0.0f, 0.0f, 1.0f}
+  };
+
+  Color bg_color = {0.0f, 0.0f, 0.0f, 0.0f};
+
   while (!window_should_close(window)) {
-    render_clear(0.0, 0.0, 0.0, 0.0);
-    render_draw(0, 0, 15, 15, 255, 0, 0, 255);
+    render_clear(&bg_color);
+    render_draw(&obj);
     window_update(window);
   }
 

@@ -62,13 +62,13 @@ void render_init() {
 }
 
 // render_clear changes the clear color
-void render_clear(float r, float g, float b, float a) {
-  glClearColor(r, g, b, a);
+void render_clear(Color* color) {
+  glClearColor(color->r, color->g, color->b, color->a);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 // render_draw draws model hitbox
-void render_draw(int x, int y, int w, int h, float r, float g, float b, float a) {
+void render_draw(Object* obj) {
   if (program_id == 0) {
     fprintf(stderr, "shaders not initialized\n");
     return;
@@ -76,8 +76,8 @@ void render_draw(int x, int y, int w, int h, float r, float g, float b, float a)
 
   glUseProgram(program_id);
 
-  glUniform4f(color_loc, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-  glVertexAttrib4f(pos_loc, x/100.0f, y/100.0f, w/100.0f, h/100.0f);
+  glUniform4f(color_loc, obj->color.r, obj->color.g, obj->color.b, obj->color.a);
+  glVertexAttrib4f(pos_loc, obj->bounds.x, obj->bounds.y, obj->bounds.w, obj->bounds.h);
 
   glBindVertexArray(VAO);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

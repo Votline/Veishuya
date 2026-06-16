@@ -1,13 +1,27 @@
 #ifndef RENDER_H
 #define RENDER_H
 
+typedef struct {
+  float x, y;
+  float w, h;
+} Bounds;
+
+typedef struct {
+  float r, g, b, a;
+} Color;
+
+typedef struct {
+  Bounds bounds;
+  Color color;
+} Object;
+
 // render_init initialize shaders
 void render_init();
 
 // render_clear changes color to 'rgba'
-void render_clear(float r, float g, float b, float a);
+void render_clear(Color* color);
 
 // render_draw renders quad in (x;y) with (w;h) color (r;g;b;a)
-void render_draw(int x, int y, int w, int h, float r, float g, float b, float a);
+void render_draw(Object* obj);
 
 #endif
