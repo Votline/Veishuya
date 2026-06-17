@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -I. -Iinternal/render -Iinternal/window -O3
 TARGET = veishuya
 
-SRCS = main.c internal/render/render.c internal/render/shaders.c internal/window/window.c
+SRCS = main.c internal/render/render.c internal/render/shaders.c internal/window/window.c internal/veishik/veishik.c
 OBJS = $(SRCS:.c=.o)
 
 LIBS = -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lm
