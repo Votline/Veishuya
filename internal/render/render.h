@@ -2,7 +2,7 @@
 #define RENDER_H
 
 typedef struct {
-  float x, y;
+  float x, y, z;
   float w, h;
 } Bounds;
 
@@ -22,6 +22,6 @@ void render_init();
 void render_clear(Color* color);
 
 // render_draw renders quad in (x;y) with (w;h) color (r;g;b;a)
-void render_draw(Object* obj);
+void render_draw(Object* obj, Bounds* cam);
 
 #endif

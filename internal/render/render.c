@@ -10,6 +10,7 @@ static unsigned int program_id = 0;
 static unsigned int VAO, VBO, EBO;
 static int color_loc = -1;
 static int pos_loc = -1;
+static int cam_loc = -1;
 
 // render_init initializes shaders
 void render_init() {
@@ -18,13 +19,15 @@ void render_init() {
     fprintf(stderr, "unable to initialize shaders\n");
     exit(1);
   }
+  glEnable(GL_DEPTH_TEST);
 
   printf("shaders initialized\n");
 
   color_loc = glGetUniformLocation(program_id, "uColor");
   pos_loc = glGetAttribLocation(program_id, "transform");
+  cam_loc = glGetUniformLocation(program_id, "uCamPos");
 
-  if (color_loc == -1 || pos_loc == -1) {
+  if (color_loc == -1 || pos_loc == -1 || cam_loc == -1) {
     fprintf(stderr, "unable to get shaders locations\n");
     exit(1);
   }
@@ -34,14 +37,19 @@ void render_init() {
   glGenBuffers(1, &EBO);
 
   float vertices[] = {
-    0.5f,  0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    -0.5f, -0.5f, 0.0f,
-    -0.5f,  0.5f, 0.0f
+    -0.5f, -0.5f,  0.5f, // 0
+     0.5f, -0.5f,  0.5f, // 1
+     0.5f,  0.5f,  0.5f, // 2
+    -0.5f,  0.5f,  0.5f, // 3
+    -0.5f, -0.5f, -0.5f, // 4
+     0.5f, -0.5f, -0.5f, // 5
+     0.5f,  0.5f, -0.5f, // 6
+    -0.5f,  0.5f, -0.5f  // 7
   };
+
   unsigned int indices[] = {
-    0, 1, 3,
-    1, 2, 3
+    0, 1, 2, 2, 3, 0, 1, 5, 6, 6, 2, 1, 5, 4, 7, 7, 6, 5,
+    4, 0, 3, 3, 7, 4, 3, 2, 6, 6, 7, 3, 4, 5, 1, 1, 0, 4
   };
 
   glBindVertexArray(VAO);
@@ -68,7 +76,7 @@ void render_clear(Color* color) {
 }
 
 // render_draw draws model hitbox
-void render_draw(Object* obj) {
+void render_draw(Object* obj, Bounds* cam) {
   if (program_id == 0) {
     fprintf(stderr, "shaders not initialized\n");
     return;
@@ -78,8 +86,9 @@ void render_draw(Object* obj) {
 
   glUniform4f(color_loc, obj->color.r, obj->color.g, obj->color.b, obj->color.a);
   glVertexAttrib4f(pos_loc, obj->bounds.x, obj->bounds.y, obj->bounds.w, obj->bounds.h);
+  glUniform3f(cam_loc, cam->x, cam->y, cam->z);
 
   glBindVertexArray(VAO);
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);
 }

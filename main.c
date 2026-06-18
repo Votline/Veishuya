@@ -22,11 +22,13 @@ int main() {
   printf("render initialized\n");
 
   Object obj = {
-    bounds: { 0.0f, 0.0f, 0.2f, 0.25f },
+    bounds: { 0.0f, 0.0f, 0.0f, 0.2f, 0.25f },
     color: {1.0f, 0.0f, 0.0f, 1.0f}
   };
 
   Color bg_color = {0.0f, 0.0f, 0.0f, 0.0f};
+
+  Bounds cam = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
   Veishik veishik;
   veishik_init(&veishik, &obj);
@@ -39,7 +41,7 @@ int main() {
 
     veishik_update(&veishik, delta_time);
     render_clear(&bg_color);
-    render_draw(&veishik.obj);
+    render_draw(&veishik.obj, &cam);
     window_update(window);
   }
 
