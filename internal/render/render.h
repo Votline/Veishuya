@@ -1,6 +1,8 @@
 #ifndef RENDER_H
 #define RENDER_H
 
+#include "internal/objparser/parser.h"
+
 typedef struct {
   float x, y, z;
   float w, h;
@@ -11,9 +13,12 @@ typedef struct {
 } Color;
 
 typedef struct {
+  float* vertices;
+  int* indices;
+  int indices_count;
   Bounds bounds;
   Color color;
-} Object;
+} RenderObject;
 
 // render_init initialize shaders
 void render_init();
@@ -22,6 +27,12 @@ void render_init();
 void render_clear(Color* color);
 
 // render_draw renders quad in (x;y) with (w;h) color (r;g;b;a)
-void render_draw(Object* obj, Bounds* cam);
+void render_draw(RenderObject* obj, Bounds* cam);
+
+// render_create_model creates buffers and fill them
+RenderObject render_create_model(const char* model_path);
+
+// render_free frees RenderObject
+void render_free(RenderObject* obj);
 
 #endif

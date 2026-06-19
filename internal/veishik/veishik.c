@@ -1,4 +1,5 @@
 #include "veishik.h"
+#include "internal/render/render.h"
 #include<stdlib.h>
 #include<math.h>
 
@@ -16,68 +17,67 @@ static float lerp(float start, float end, float t) {
 }
 
 // veishik_init initializes veishik
-void veishik_init(Veishik* veishik, Object* obj) {
-  Veishik vei = *veishik;
-  Object vei_data = *obj;
-  vei.obj.bounds = vei_data.bounds;
-  vei.obj.color = vei_data.color;
-  
-  vei.state = STATE_IDLE;
-  vei.anim_time = 0.0f;
-  vei.base_speed = 0.5f;
-  vei.current_speed = vei.base_speed;
+void veishik_init(Veishik* veishik, const char* model_path) {
+  veishik->state = STATE_IDLE;
+  veishik->anim_time = 0.0f;
+  veishik->base_speed = 0.5f;
+  veishik->current_speed = veishik->base_speed;
 
-  vei.idle_timer = 0.0f;
-  vei.idle_duration = 1.5f;
+  veishik->idle_timer = 0.0f;
+  veishik->idle_duration = 1.5f;
 
-  *veishik = vei;
+  RenderObject render_obj = render_create_model(model_path);
+
+  Color color = veishik->render_object.color;
+  Bounds bounds = veishik->render_object.bounds;
+
+  veishik->render_object = render_obj;
+  veishik->render_object.color = color;
+  veishik->render_object.bounds = bounds;
 }
 
 // veishik_update updates veishik position and state
 void veishik_update(Veishik* veishik, float delta_time) {
-  Veishik vei = *veishik;
-
-  switch (vei.state) {
+  switch (veishik->state) {
     case STATE_IDLE:
-      vei.idle_timer+= delta_time;
-      if (vei.idle_timer > vei.idle_duration) {
+      veishik->idle_timer+= delta_time;
+      if (veishik->idle_timer > veishik->idle_duration) {
         if (rand() % 2 == 0) {
-          vei.state = STATE_MOVING;
-          vei.start_x = vei.obj.bounds.x;
-          vei.start_y = vei.obj.bounds.y;
-          vei.target_x = get_random_float(-0.8f, 0.8f);
-          vei.target_y = get_random_float(-0.8f, 0.8f);
-          vei.anim_time = 0.0f;
+          veishik->state = STATE_MOVING;
+          veishik->start_x = veishik->render_object.bounds.x;
+          veishik->start_y = veishik->render_object.bounds.y;
+          veishik->target_x = get_random_float(-0.8f, 0.8f);
+          veishik->target_y = get_random_float(-0.8f, 0.8f);
+          veishik->anim_time = 0.0f;
 
-          float dx = vei.target_x - vei.start_x;
-          float dy = vei.target_y - vei.start_y;
+          float dx = veishik->target_x - veishik->start_x;
+          float dy = veishik->target_y - veishik->start_y;
           float distance = hypotf(dx, dy);
 
           if (distance > 0.001f) {
-            vei.current_speed = vei.base_speed / distance;
+            veishik->current_speed = veishik->base_speed / distance;
           } else {
-            vei.current_speed = vei.base_speed;
+            veishik->current_speed = veishik->base_speed;
           }
         } else {
-          vei.idle_timer = 0.0f;
-          vei.idle_duration = get_random_float(0.5f, 2.0f);
+          veishik->idle_timer = 0.0f;
+          veishik->idle_duration = get_random_float(0.5f, 2.0f);
         }
       }
       break;
 
     case STATE_MOVING:
-      vei.anim_time += delta_time * vei.current_speed;
-      if (vei.anim_time > 1.0f) vei.anim_time = 1.0f;
+      veishik->anim_time += delta_time * veishik->current_speed;
+      if (veishik->anim_time > 1.0f) veishik->anim_time = 1.0f;
 
-      vei.obj.bounds.x = lerp(vei.start_x, vei.target_x, vei.anim_time);
-      vei.obj.bounds.y = lerp(vei.start_y, vei.target_y, vei.anim_time);
+      veishik->render_object.bounds.x = lerp(veishik->start_x, veishik->target_x, veishik->anim_time);
+      veishik->render_object.bounds.y = lerp(veishik->start_y, veishik->target_y, veishik->anim_time);
 
-      if (vei.anim_time >= 1.0f) {
-        vei.state = STATE_IDLE;
-        vei.idle_timer = 0.0f;
-        vei.idle_duration = get_random_float(0.5f, 2.0f);
+      if (veishik->anim_time >= 1.0f) {
+        veishik->state = STATE_IDLE;
+        veishik->idle_timer = 0.0f;
+        veishik->idle_duration = get_random_float(0.5f, 2.0f);
       }
       break;
   }
-  *veishik = vei;
 }

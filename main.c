@@ -21,17 +21,18 @@ int main() {
   render_init();
   printf("render initialized\n");
 
-  Object obj = {
-    bounds: { 0.0f, 0.0f, 0.0f, 0.2f, 0.25f },
-    color: {1.0f, 0.0f, 0.0f, 1.0f}
-  };
-
   Color bg_color = {0.0f, 0.0f, 0.0f, 0.0f};
 
   Bounds cam = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
-  Veishik veishik;
-  veishik_init(&veishik, &obj);
+  Veishik veishik = {
+    .render_object = {
+      .color = {1.0f, 1.0f, 1.0f, 1.0f},
+      .bounds = {0.0f, 0.0f, 0.0f, 0.15f, 0.2f}
+    }
+  };
+
+  veishik_init(&veishik, "assets/cube.obj");
 
   float last_time = 0.0f;
   while (!window_should_close(window)) {
@@ -41,12 +42,13 @@ int main() {
 
     veishik_update(&veishik, delta_time);
     render_clear(&bg_color);
-    render_draw(&veishik.obj, &cam);
+    render_draw(&veishik.render_object, &cam);
     window_update(window);
   }
 
   printf("window closed\n");
   window_close(window);
+  render_free(&veishik.render_object);
 
   return 0;
 }

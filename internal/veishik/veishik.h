@@ -2,9 +2,10 @@
 #define VEISHIK_H
 
 #include "internal/render/render.h"
+#include "internal/objparser/parser.h"
 
 typedef struct {
-  Object obj;
+  RenderObject render_object;
   int state;
   float start_x;
   float start_y;
@@ -18,7 +19,7 @@ typedef struct {
 } Veishik;
 
 // veishik_init fill struct fields by pointer
-void veishik_init(Veishik* cube, Object* obj);
+void veishik_init(Veishik* cube, const char* model_path);
 
 // veishik_update update object in the scene (timers, movement)
 void veishik_update(Veishik* vei, float delta_time);

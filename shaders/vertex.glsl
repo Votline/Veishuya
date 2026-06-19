@@ -1,14 +1,14 @@
 #version 330 core
 
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec4 transform;
+uniform vec4 uTransform;
 uniform vec3 uCamPos;
 
 void main() {
-	float posX = transform.x;
-	float posY = transform.y;
-	float scaleW = transform.z;
-	float scaleH = transform.w;
+	float posX = uTransform.x;
+	float posY = uTransform.y;
+	float scaleW = uTransform.z;
+	float scaleH = uTransform.w;
 
   vec3 pos = vec3(aPos.x * scaleW + posX,aPos.y * scaleH + posY,aPos.z) - uCamPos;
 
