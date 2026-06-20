@@ -1,14 +1,16 @@
 #include "veishik.h"
+
+#include <math.h>
+#include <stdlib.h>
+
 #include "internal/render/render.h"
-#include<stdlib.h>
-#include<math.h>
 
 #define STATE_IDLE 0
 #define STATE_MOVING 1
 
 // get_random_float returns a random float between min and max
 static float get_random_float(float min, float max) {
-  return min + ((float)rand() / (float)RAND_MAX) * (max - min);
+  return min + ((float)(arc4random()%100) / (float)RAND_MAX) * (max - min);
 }
 
 // lerp returns a linear interpolation between start and end
@@ -40,7 +42,7 @@ void veishik_init(Veishik* veishik, const char* model_path) {
 void veishik_update(Veishik* veishik, float delta_time) {
   switch (veishik->state) {
     case STATE_IDLE:
-      veishik->idle_timer+= delta_time;
+      veishik->idle_timer += delta_time;
       if (veishik->idle_timer > veishik->idle_duration) {
         if (rand() % 2 == 0) {
           veishik->state = STATE_MOVING;
@@ -70,8 +72,10 @@ void veishik_update(Veishik* veishik, float delta_time) {
       veishik->anim_time += delta_time * veishik->current_speed;
       if (veishik->anim_time > 1.0f) veishik->anim_time = 1.0f;
 
-      veishik->render_object.bounds.x = lerp(veishik->start_x, veishik->target_x, veishik->anim_time);
-      veishik->render_object.bounds.y = lerp(veishik->start_y, veishik->target_y, veishik->anim_time);
+      veishik->render_object.bounds.x =
+          lerp(veishik->start_x, veishik->target_x, veishik->anim_time);
+      veishik->render_object.bounds.y =
+          lerp(veishik->start_y, veishik->target_y, veishik->anim_time);
 
       if (veishik->anim_time >= 1.0f) {
         veishik->state = STATE_IDLE;

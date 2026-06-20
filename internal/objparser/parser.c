@@ -1,8 +1,10 @@
 #include "parser.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "internal/slice/slice.h"
-#include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
 
 // parser_obj_read reads file from path and returns its content
 static char* parser_obj_read(const char* path) {
@@ -51,18 +53,23 @@ OBJModelData* parser_obj_parse(const char* path) {
       slice_append(&vertices, &z);
     } else if (line[0] == 'f' && line[1] == ' ') {
       int v1, v2, v3, v4;
-      int parsed = sscanf(line, "f %d/%*d/%*d %d/%*d/%*d %d/%*d/%*d %d/%*d/%*d", &v1, &v2, &v3, &v4);
+      int parsed = sscanf(line, "f %d/%*d/%*d %d/%*d/%*d %d/%*d/%*d %d/%*d/%*d",
+                          &v1, &v2, &v3, &v4);
       if (parsed != 4 && parsed != 3) {
-        parsed = sscanf(line, "f %d/%*d %d/%*d %d/%*d %d/%*d", &v1, &v2, &v3, &v4);
+        parsed =
+            sscanf(line, "f %d/%*d %d/%*d %d/%*d %d/%*d", &v1, &v2, &v3, &v4);
       }
       if (parsed != 4 && parsed != 3) {
-        parsed = sscanf(line, "f %d//%*d %d//%*d %d//%*d %d//%*d", &v1, &v2, &v3, &v4);
+        parsed = sscanf(line, "f %d//%*d %d//%*d %d//%*d %d//%*d", &v1, &v2,
+                        &v3, &v4);
       }
       if (parsed != 4 && parsed != 3) {
         parsed = sscanf(line, "f %d %d %d %d", &v1, &v2, &v3, &v4);
       }
       if (parsed >= 3) {
-        v1--; v2--; v3--;
+        v1--;
+        v2--;
+        v3--;
         slice_append(&indices, &v1);
         slice_append(&indices, &v2);
         slice_append(&indices, &v3);

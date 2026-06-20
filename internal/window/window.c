@@ -1,9 +1,10 @@
 // package window creates a transpatent untouchable glfw window
 #include "window.h"
-#include<stdio.h>
+
+#include <stdio.h>
 
 // window_init creates a transparent untouchable glfw window
-GLFWwindow* window_init(int width, int height, const char* title){
+GLFWwindow* window_init(int width, int height, const char* title) {
   if (!glfwInit()) {
     fprintf(stderr, "Failed to initialize GLFW\n");
     return NULL;
@@ -29,19 +30,19 @@ GLFWwindow* window_init(int width, int height, const char* title){
 }
 
 // window_should_close checks if the glfw window should be closed
-int window_should_close(GLFWwindow* window){
+int window_should_close(GLFWwindow* window) {
   return glfwWindowShouldClose(window);
 }
 
 // window_update swap buffers and poll events
-int window_update(GLFWwindow* window){
+int window_update(GLFWwindow* window) {
   glfwSwapBuffers(window);
   glfwPollEvents();
   return 0;
 }
 
 // window_close closes destroys the glfw window and terminates glfw
-int window_close(GLFWwindow* window){
+int window_close(GLFWwindow* window) {
   if (window != NULL) {
     glfwDestroyWindow(window);
   }

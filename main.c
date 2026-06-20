@@ -1,17 +1,16 @@
-#include<time.h>
-#include<math.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include "internal/window/window.h"
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 #include "internal/render/render.h"
 #include "internal/veishik/veishik.h"
+#include "internal/window/window.h"
 
-#define WIN_W 800
-#define WIN_H 600
+enum { WIN_W = 800 };
+enum { WIN_H = 600 };
 
 int main() {
-  srand(time(NULL));
-
   GLFWwindow* window = window_init(WIN_W, WIN_H, "veishuya");
   if (window == NULL) {
     return -1;
@@ -26,17 +25,14 @@ int main() {
   Bounds cam = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
   Veishik veishik = {
-    .render_object = {
-      .color = {1.0f, 1.0f, 1.0f, 1.0f},
-      .bounds = {0.0f, 0.0f, 0.0f, 0.15f, 0.2f}
-    }
-  };
+      .render_object = {.color = {1.0f, 1.0f, 1.0f, 1.0f},
+                        .bounds = {0.0f, 0.0f, 0.0f, 0.15f, 0.2f}}};
 
   veishik_init(&veishik, "assets/cube.obj");
 
   float last_time = 0.0f;
   while (!window_should_close(window)) {
-    float current_time = glfwGetTime();
+    float current_time = (float)glfwGetTime();
     float delta_time = current_time - last_time;
     last_time = current_time;
 

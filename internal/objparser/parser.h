@@ -2,7 +2,7 @@
 #define OBJPARSER_H
 
 typedef struct {
-  float x,y,z;
+  float x, y, z;
 } Vertex;
 
 typedef struct {
@@ -15,7 +15,6 @@ typedef struct {
   int* indices;
   int indices_count;
 } OBJModelData;
-
 
 OBJModelData* parser_obj_parse(const char* path);
 

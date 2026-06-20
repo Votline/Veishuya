@@ -1,8 +1,8 @@
 #ifndef VEISHIK_H
 #define VEISHIK_H
 
-#include "internal/render/render.h"
 #include "internal/objparser/parser.h"
+#include "internal/render/render.h"
 
 typedef struct {
   RenderObject render_object;

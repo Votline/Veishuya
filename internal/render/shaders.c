@@ -1,9 +1,10 @@
-#define GL_GLEXT_PROTOTYPES // for Linux features functions
+#define GL_GLEXT_PROTOTYPES  // for Linux features functions
 #include "shaders.h"
-#include<stdio.h>
-#include<stdlib.h>
-#include<GL/gl.h>
-#include<GL/glext.h>
+
+#include <GL/gl.h>
+#include <GL/glext.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 // read_file read file from path and return its content
 // allocate memory for the content
@@ -33,7 +34,8 @@ static char* read_file(const char* path) {
 }
 
 // compile_shader compile shader_type shader from shader_path
-static unsigned int compile_shader(const char* shader_path, unsigned int shader_type) {
+static unsigned int compile_shader(const char* shader_path,
+                                   unsigned int shader_type) {
   char* shader_code = read_file(shader_path);
   if (shader_code == NULL) {
     return 0;
@@ -59,7 +61,8 @@ static unsigned int compile_shader(const char* shader_path, unsigned int shader_
 }
 
 // shader_init initialize and link shader_type shader from shader_path
-unsigned int shader_init(const char* shader_path, unsigned int shader_type, unsigned int program_id) {
+unsigned int shader_init(const char* shader_path, unsigned int shader_type,
+                         unsigned int program_id) {
   unsigned int shader = compile_shader(shader_path, shader_type);
 
   if (shader == 0) {
@@ -91,7 +94,8 @@ unsigned int shader_init_base() {
 
   program_id = shader_init("shaders/vertex.glsl", GL_VERTEX_SHADER, program_id);
   if (program_id == 0) return 0;
-  program_id = shader_init("shaders/fragment.glsl", GL_FRAGMENT_SHADER, program_id);
+  program_id =
+      shader_init("shaders/fragment.glsl", GL_FRAGMENT_SHADER, program_id);
   if (program_id == 0) return 0;
 
   return program_id;
