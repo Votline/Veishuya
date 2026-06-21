@@ -6,14 +6,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "internal/mat4/mat4.h"
 #include "internal/objparser/parser.h"
 #include "shaders.h"
 
 static unsigned int program_id = 0;
 static unsigned int VAO, VBO, EBO;
 static int color_loc = -1;
-static int tranf_loc = -1;
-static int cam_loc = -1;
+static int uMVP_loc = -1;
 
 // render_init initializes shaders
 void render_init() {
@@ -27,10 +27,9 @@ void render_init() {
   printf("shaders initialized\n");
 
   color_loc = glGetUniformLocation(program_id, "uColor");
-  tranf_loc = glGetUniformLocation(program_id, "uTransform");
-  cam_loc = glGetUniformLocation(program_id, "uCamPos");
+  uMVP_loc = glGetUniformLocation(program_id, "uMVP");
 
-  if (color_loc == -1 || tranf_loc == -1 || cam_loc == -1) {
+  if (color_loc == -1 || uMVP_loc == -1) {
     fprintf(stderr, "unable to get shaders locations\n");
     exit(1);
   }
@@ -79,8 +78,7 @@ void render_clear(Color* color) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-// render_draw draws model hitbox
-void render_draw(RenderObject* obj, Bounds* cam) {
+void render_draw(RenderObject* obj, Bounds* cam, float winW, float winH) {
   if (program_id == 0) {
     fprintf(stderr, "shaders not initialized\n");
     return;
@@ -88,11 +86,26 @@ void render_draw(RenderObject* obj, Bounds* cam) {
 
   glUseProgram(program_id);
 
+  float model[16];
+  float view[16];
+  float projection[16];
+  float mvp[16];
+  float tmp[16];
+
+  mat4_model(model, obj->bounds.x, obj->bounds.y, 0.0f, obj->bounds.w,
+             obj->bounds.h, 1.0f);
+  mat4_model(view, -cam->x, -cam->y, -cam->z, 1.0f, 1.0f, 1.0f);
+
+  float aspect_ratio = winW / winH;
+  mat4_perspective(projection, 45.0f, aspect_ratio, 0.1f, 100.0f);
+
+  mat4_mul(tmp, projection, view);
+  mat4_mul(mvp, tmp, model);
+
   glUniform4f(color_loc, obj->color.r, obj->color.g, obj->color.b,
               obj->color.a);
-  glUniform4f(tranf_loc, obj->bounds.x, obj->bounds.y, obj->bounds.w,
-              obj->bounds.h);
-  glUniform3f(cam_loc, cam->x, cam->y, cam->z);
+
+  glUniformMatrix4fv(uMVP_loc, 1, GL_FALSE, mvp);
 
   glBindVertexArray(VAO);
   glDrawElements(GL_TRIANGLES, obj->indices_count, GL_UNSIGNED_INT, 0);

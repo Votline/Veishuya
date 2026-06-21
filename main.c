@@ -22,11 +22,11 @@ int main() {
 
   Color bg_color = {0.0f, 0.0f, 0.0f, 0.0f};
 
-  Bounds cam = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  Bounds cam = {0.0f, 0.0f, 5.0f, 0.0f, 0.0f};
 
   Veishik veishik = {
       .render_object = {.color = {1.0f, 1.0f, 1.0f, 1.0f},
-                        .bounds = {0.0f, 0.0f, 0.0f, 0.15f, 0.2f}}};
+                        .bounds = {0.0f, 0.0f, 0.0f, 0.5f, 0.5f}}};
 
   veishik_init(&veishik, "assets/cube.obj");
 
@@ -38,7 +38,7 @@ int main() {
 
     veishik_update(&veishik, delta_time);
     render_clear(&bg_color);
-    render_draw(&veishik.render_object, &cam);
+    render_draw(&veishik.render_object, &cam, WIN_W, WIN_H);
     window_update(window);
   }
 

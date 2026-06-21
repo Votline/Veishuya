@@ -10,7 +10,7 @@
 
 // get_random_float returns a random float between min and max
 static float get_random_float(float min, float max) {
-  return min + ((float)(arc4random()%100) / (float)RAND_MAX) * (max - min);
+  return min + ((float)(arc4random() % 100) / (float)RAND_MAX) * (max - min);
 }
 
 // lerp returns a linear interpolation between start and end

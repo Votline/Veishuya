@@ -27,7 +27,7 @@ void render_init();
 void render_clear(Color* color);
 
 // render_draw renders quad in (x;y) with (w;h) color (r;g;b;a)
-void render_draw(RenderObject* obj, Bounds* cam);
+void render_draw(RenderObject* obj, Bounds* cam, float winW, float winH);
 
 // render_create_model creates buffers and fill them
 RenderObject render_create_model(const char* model_path);
