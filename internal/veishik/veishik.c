@@ -5,12 +5,14 @@
 
 #include "internal/render/render.h"
 
-#define STATE_IDLE 0
-#define STATE_MOVING 1
+enum { STATE_IDLE = 0 };
+enum { STATE_MOVING = 1 };
+#define RANDOM_MAX 4294967295.0f
 
 // get_random_float returns a random float between min and max
 static float get_random_float(float min, float max) {
-  return min + ((float)(arc4random() % 100) / (float)RAND_MAX) * (max - min);
+  float scale = (float)arc4random() / RANDOM_MAX;
+  return min + scale * (max - min);
 }
 
 // lerp returns a linear interpolation between start and end
