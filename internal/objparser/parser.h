@@ -16,6 +16,11 @@ typedef struct {
   int indices_count;
 } OBJModelData;
 
+typedef struct {
+  float r, g, b, a;
+} MTLColor;
+
 OBJModelData* parser_obj_parse(const char* path);
+MTLColor parser_mtl_parse_color(const char* mtl_path);
 
 #endif

@@ -19,7 +19,8 @@ static float lerp(float start, float end, float t) {
 }
 
 // veishik_init initializes veishik
-void veishik_init(Veishik* veishik, const char* model_path) {
+void veishik_init(Veishik* veishik, const char* obj_path,
+                  const char* mtl_path) {
   veishik->state = STATE_IDLE;
   veishik->anim_time = 0.0f;
   veishik->base_speed = 0.5f;
@@ -28,14 +29,18 @@ void veishik_init(Veishik* veishik, const char* model_path) {
   veishik->idle_timer = 0.0f;
   veishik->idle_duration = 1.5f;
 
-  RenderObject render_obj = render_create_model(model_path);
+  RenderObject render_obj = render_create_model(obj_path);
 
-  Color color = veishik->render_object.color;
   Bounds bounds = veishik->render_object.bounds;
 
   veishik->render_object = render_obj;
-  veishik->render_object.color = color;
   veishik->render_object.bounds = bounds;
+
+  MTLColor mtl_color = parser_mtl_parse_color(mtl_path);
+  veishik->render_object.color.r = mtl_color.r;
+  veishik->render_object.color.g = mtl_color.g;
+  veishik->render_object.color.b = mtl_color.b;
+  veishik->render_object.color.a = mtl_color.a;
 }
 
 // veishik_update updates veishik position and state

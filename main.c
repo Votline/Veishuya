@@ -28,7 +28,7 @@ int main() {
       .render_object = {.color = {1.0f, 1.0f, 1.0f, 1.0f},
                         .bounds = {0.0f, 0.0f, 0.0f, 0.5f, 0.5f}}};
 
-  veishik_init(&veishik, "assets/cube.obj");
+  veishik_init(&veishik, "assets/cube.obj", "assets/cube.mtl");
 
   float last_time = 0.0f;
   while (!window_should_close(window)) {
