@@ -19,7 +19,7 @@ typedef struct {
 } Veishik;
 
 // veishik_init fill struct fields by pointer
-void veishik_init(Veishik* cube, const char* obj_path, const char* mtl_path);
+void veishik_init(Veishik* cube, const char* model_path);
 
 // veishik_update update object in the scene (timers, movement)
 void veishik_update(Veishik* vei, float delta_time);

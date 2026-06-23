@@ -14,13 +14,9 @@ typedef struct {
   int vertices_count;
   int* indices;
   int indices_count;
-} OBJModelData;
-
-typedef struct {
   float r, g, b, a;
-} MTLColor;
+} ModelData;
 
-OBJModelData* parser_obj_parse(const char* path);
-MTLColor parser_mtl_parse_color(const char* mtl_path);
+ModelData* parser_gltf_parse(const char* path);
 
 #endif

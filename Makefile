@@ -6,7 +6,9 @@ TARGET = veishuya
 SANITIZE_FLAGS = -fsanitize=address -fno-omit-frame-pointer -g
 
 SRCS = main.c internal/render/render.c internal/render/shaders.c internal/window/window.c \
-       internal/veishik/veishik.c internal/objparser/parser.c internal/slice/slice.c internal/mat4/mat4.c
+       internal/veishik/veishik.c internal/objparser/parser.c \
+       internal/mat4/mat4.c
+
 OBJS = $(SRCS:.c=.o)
 
 LIBS = -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lm
