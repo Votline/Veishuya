@@ -13,11 +13,13 @@ typedef struct {
 } Color;
 
 typedef struct {
-  float* vertices;
+  Vertex* vertices;
   int* indices;
   int indices_count;
   Bounds bounds;
   Color color;
+  int bones_count;
+  Bone* bones;
 } RenderObject;
 
 // render_init initialize shaders
