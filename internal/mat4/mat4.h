@@ -21,4 +21,8 @@ void mat4_model(float* m, float tx, float ty, float tz, float sx, float sy,
 void mat4_perspective(float* m, float fov_deg, float aspect, float near_plane,
                       float far_plane);
 
+void mat4_translate(float* m, float x, float y, float z);
+
+void mat4_from_quat(float* m, const float* q);
+
 #endif

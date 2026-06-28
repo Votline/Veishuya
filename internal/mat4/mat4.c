@@ -43,3 +43,51 @@ void mat4_perspective(float* m, float fov_deg, float aspect, float near_plane,
   m[11] = -1.0f;
   m[14] = -(2.0f * far_plane * near_plane) / (far_plane - near_plane);
 }
+
+void mat4_translate(float* mat, float x, float y, float z) {
+  mat[0] = 1.0f;
+  mat[1] = 0.0f;
+  mat[2] = 0.0f;
+  mat[3] = 0.0f;
+  mat[4] = 0.0f;
+  mat[5] = 1.0f;
+  mat[6] = 0.0f;
+  mat[7] = 0.0f;
+  mat[8] = 0.0f;
+  mat[9] = 0.0f;
+  mat[10] = 1.0f;
+  mat[11] = 0.0f;
+
+  mat[12] = x;
+  mat[13] = y;
+  mat[14] = z;
+  mat[15] = 1.0f;
+}
+
+void mat4_from_quat(float* mat, const float* q) {
+  float x = q[0], y = q[1], z = q[2], w = q[3];
+
+  float xx = x * x, xy = x * y, xz = x * z, xw = x * w;
+  float yy = y * y, yz = y * z, yw = y * w;
+  float zz = z * z, zw = z * w;
+
+  mat[0] = 1.0f - 2.0f * (yy + zz);
+  mat[1] = 2.0f * (xy + zw);
+  mat[2] = 2.0f * (xz - yw);
+  mat[3] = 0.0f;
+
+  mat[4] = 2.0f * (xy - zw);
+  mat[5] = 1.0f - 2.0f * (xx + zz);
+  mat[6] = 2.0f * (yz + xw);
+  mat[7] = 0.0f;
+
+  mat[8] = 2.0f * (xz + yw);
+  mat[9] = 2.0f * (yz - xw);
+  mat[10] = 1.0f - 2.0f * (xx + yy);
+  mat[11] = 0.0f;
+
+  mat[12] = 0.0f;
+  mat[13] = 0.0f;
+  mat[14] = 0.0f;
+  mat[15] = 1.0f;
+}

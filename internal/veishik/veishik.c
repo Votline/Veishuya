@@ -33,9 +33,11 @@ void veishik_init(Veishik* veishik, const char* model_path) {
   RenderObject render_obj = render_create_model(model_path);
 
   Bounds bounds = veishik->render_object.bounds;
+  float scale = veishik->render_object.scale;
 
   veishik->render_object = render_obj;
   veishik->render_object.bounds = bounds;
+  veishik->render_object.scale = scale;
 }
 
 // veishik_update updates veishik position and state

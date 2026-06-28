@@ -17,9 +17,11 @@ typedef struct {
   int* indices;
   int indices_count;
   Bounds bounds;
+  float scale;
   Color color;
   int bones_count;
   Bone* bones;
+  AnimationData anim;
 } RenderObject;
 
 // render_init initialize shaders
@@ -30,6 +32,9 @@ void render_clear(Color* color);
 
 // render_draw renders quad in (x;y) with (w;h) color (r;g;b;a)
 void render_draw(RenderObject* obj, Bounds* cam, float winW, float winH);
+
+// render_update_anim update object animation
+void render_update_anim(RenderObject* obj, float time);
 
 // render_create_model creates buffers and fill them
 RenderObject render_create_model(const char* model_path);
